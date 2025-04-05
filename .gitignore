@@ -1,0 +1,40 @@
+# Node.js
+node_modules/
+bin/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+dist/
+build/
+
+# Variables de entorno
+.env
+.env.*.local
+
+# Sequelize (manteniendo versionados migrations, seeders y models)
+# NO ignoramos migrations/, seeders/ ni models/
+# Solo ignoramos archivos temporales o sensibles
+
+# SQLite (en caso de que se use como DB local)
+*.sqlite
+*.sqlite3
+
+# Logs
+logs/
+*.log
+*.pid
+*.seed
+
+# Coverage y pruebas
+coverage/
+.nyc_output/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# IDEs y editores
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
