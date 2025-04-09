@@ -2,44 +2,151 @@ const express = require("express"); // Importa Express para manejar rutas
 const { Cliente } = require("../models"); // Importa el modelo Cliente desde la carpeta models
 const router = express.Router(); // Crea un router de Express
 
-// Crear un nuevo cliente
+/**
+ * @swagger
+ * tags:
+ *   name: Clientes
+ *   description: Endpoints para gestión de clientes
+ */
+
+/**
+ * @swagger
+ * /clientes:
+ *   post:
+ *     summary: Crear un nuevo cliente
+ *     tags: [Clientes]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nombre:
+ *                 type: string
+ *               correo:
+ *                 type: string
+ *               telefono:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Cliente creado exitosamente
+ *       400:
+ *         description: Error en los datos enviados
+ */
 router.post("/", async (req, res) => {
   try {
-    const cliente = await Cliente.create(req.body); // Crea un cliente con los datos enviados en la petición
-    res.status(201).json(cliente); // Devuelve el cliente creado con código 201 (Created)
+    const cliente = await Cliente.create(req.body);
+    res.status(201).json(cliente);
   } catch (error) {
-    res.status(400).json({ error: error.message }); // Manejo de errores en caso de datos incorrectos
+    res.status(400).json({ error: error.message });
   }
 });
 
-// Obtener todos los clientes
+/**
+ * @swagger
+ * /clientes:
+ *   get:
+ *     summary: Obtener todos los clientes
+ *     tags: [Clientes]
+ *     responses:
+ *       200:
+ *         description: Lista de todos los clientes
+ */
 router.get("/", async (req, res) => {
-  const clientes = await Cliente.findAll(); // Busca todos los clientes en la BD
-  res.json(clientes); // Devuelve la lista de clientes en formato JSON
+  const clientes = await Cliente.findAll();
+  res.json(clientes);
 });
 
-// Obtener un cliente por ID
+/**
+ * @swagger
+ * /clientes/{id}:
+ *   get:
+ *     summary: Obtener un cliente por ID
+ *     tags: [Clientes]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID del cliente
+ *     responses:
+ *       200:
+ *         description: Cliente encontrado
+ *       404:
+ *         description: Cliente no encontrado
+ */
 router.get("/:id", async (req, res) => {
-  const cliente = await Cliente.findByPk(req.params.id); // Busca un cliente por su ID
-  cliente ? res.json(cliente) : res.status(404).json({ error: "Cliente no encontrado" }); // Devuelve error si no existe
+  const cliente = await Cliente.findByPk(req.params.id);
+  cliente ? res.json(cliente) : res.status(404).json({ error: "Cliente no encontrado" });
 });
 
-// Actualizar un cliente
+/**
+ * @swagger
+ * /clientes/{id}:
+ *   put:
+ *     summary: Actualizar un cliente
+ *     tags: [Clientes]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID del cliente
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nombre:
+ *                 type: string
+ *               correo:
+ *                 type: string
+ *               telefono:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Cliente actualizado exitosamente
+ *       404:
+ *         description: Cliente no encontrado
+ */
 router.put("/:id", async (req, res) => {
-  const cliente = await Cliente.findByPk(req.params.id); // Busca el cliente por ID
-  if (!cliente) return res.status(404).json({ error: "Cliente no encontrado" }); // Si no existe, envía error
+  const cliente = await Cliente.findByPk(req.params.id);
+  if (!cliente) return res.status(404).json({ error: "Cliente no encontrado" });
 
-  await cliente.update(req.body); // Actualiza el cliente con los nuevos datos
-  res.json(cliente); // Devuelve el cliente actualizado
+  await cliente.update(req.body);
+  res.json(cliente);
 });
 
-// Eliminar un cliente
+/**
+ * @swagger
+ * /clientes/{id}:
+ *   delete:
+ *     summary: Eliminar un cliente
+ *     tags: [Clientes]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID del cliente
+ *     responses:
+ *       200:
+ *         description: Cliente eliminado exitosamente
+ *       404:
+ *         description: Cliente no encontrado
+ */
 router.delete("/:id", async (req, res) => {
-  const cliente = await Cliente.findByPk(req.params.id); // Busca el cliente por ID
-  if (!cliente) return res.status(404).json({ error: "Cliente no encontrado" }); // Si no existe, envía error
+  const cliente = await Cliente.findByPk(req.params.id);
+  if (!cliente) return res.status(404).json({ error: "Cliente no encontrado" });
 
-  await cliente.destroy(); // Elimina el cliente de la base de datos
-  res.json({ mensaje: "Cliente eliminado" }); // Devuelve mensaje de éxito
+  await cliente.destroy();
+  res.json({ mensaje: "Cliente eliminado" });
 });
 
-module.exports = router; // Exporta el router para ser usado en index.js
+module.exports = router;
