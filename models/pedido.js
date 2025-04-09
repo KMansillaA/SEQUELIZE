@@ -1,7 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
   const Pedido = sequelize.define("Pedido", {
     fecha: DataTypes.DATE,
-    total: DataTypes.FLOAT
+    total: DataTypes.FLOAT,
+    observacion: DataTypes.STRING  // 👈 Nuevo campo
   });
 
   Pedido.associate = (models) => {
